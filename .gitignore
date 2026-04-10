@@ -1,0 +1,20 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+
+# Claude
+.claude/
+
+# macOS
+.DS_Store
+
+# Derived data (rebuilt from snapshots by collector.py)
+data/timeseries.parquet
+data/collector.log
+
+# IDE
+.vscode/
+.idea/
