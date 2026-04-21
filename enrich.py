@@ -16,6 +16,7 @@ Designed to be cheap and deterministic. API usage per day is bounded:
 
 import argparse
 import json
+import statistics
 import time
 import urllib.error
 import urllib.parse
@@ -38,6 +39,16 @@ MAX_RELATED_PER_TX = 25                 # cap on addresses recorded per tx
 DEFAULT_LOOKBACK_BLOCKS = 200           # ~1.4 days at 10-min blocks
 REQ_SLEEP = 0.1                         # throttle between requests (s)
 
+# Profiling tunables
+BULK_BATCH = 20                         # WOC bulk endpoint cap
+BATCH_SLEEP = 0.3                       # throttle between bulk POSTs
+BLOCKS_PER_DAY = 144                    # approx (10-minute blocks)
+HOT_UTXO_HINT = 20                      # ≥ this (or paginated) → many UTXOs
+COLD_UTXO_HINT = 5                      # ≤ this → few UTXOs
+COLD_AGE_DAYS = 30                      # newest UTXO older than this → dormant
+ACTIVE_BALANCE_CV = 0.05                # CV above this → active balance
+STABLE_BALANCE_CV = 0.005               # CV below this → stable balance
+
 
 def woc_get(path: str, retries: int = 3, backoff: float = 2.0):
     """GET a WOC JSON endpoint. Returns parsed JSON, or None on 404."""
@@ -57,6 +68,41 @@ def woc_get(path: str, retries: int = 3, backoff: float = 2.0):
         if attempt < retries - 1:
             time.sleep(backoff * (attempt + 1))
     raise RuntimeError(f"WOC GET {path} failed: {last_err}")
+
+
+def woc_post(path: str, body: dict, retries: int = 3, backoff: float = 2.0):
+    """POST JSON to a WOC endpoint. Returns parsed JSON."""
+    url = f"{WOC_BASE}{path}"
+    data = json.dumps(body).encode()
+    req = urllib.request.Request(
+        url, data=data,
+        headers={"User-Agent": USER_AGENT, "Content-Type": "application/json"},
+        method="POST",
+    )
+    last_err: Exception | None = None
+    for attempt in range(retries):
+        try:
+            with urllib.request.urlopen(req, timeout=60) as resp:
+                return json.loads(resp.read().decode())
+        except urllib.error.HTTPError as e:
+            if e.code == 404:
+                return None
+            last_err = e
+        except (urllib.error.URLError, TimeoutError) as e:
+            last_err = e
+        if attempt < retries - 1:
+            time.sleep(backoff * (attempt + 1))
+    raise RuntimeError(f"WOC POST {path} failed: {last_err}")
+
+
+def fetch_tip_height() -> int | None:
+    data = woc_get("/chain/info")
+    if isinstance(data, dict):
+        for k in ("blocks", "height"):
+            v = data.get(k)
+            if isinstance(v, int):
+                return v
+    return None
 
 
 def load_snapshot(date_str: str) -> dict | None:
@@ -242,6 +288,166 @@ def investigate(addr: str, scripthash: str | None, lookback_blocks: int) -> list
     return reports
 
 
+def fetch_bulk_utxos(addresses: list[str]) -> dict[str, dict]:
+    """Fetch page-1 confirmed UTXOs for many addresses via WOC bulk endpoint.
+
+    Returns {address: {"utxos": [...], "has_more": bool, "error": str|None}}.
+    We intentionally don't follow `nextPageToken` — first page is enough for
+    profiling, and walking pagination for 10k+ UTXO hot wallets would be
+    expensive for marginal signal gain.
+    """
+    out: dict[str, dict] = {}
+    for i in range(0, len(addresses), BULK_BATCH):
+        batch = addresses[i:i + BULK_BATCH]
+        try:
+            data = woc_post("/addresses/confirmed/unspent", {"addresses": batch})
+        except Exception as e:
+            for a in batch:
+                out[a] = {"utxos": [], "has_more": False, "error": str(e)}
+            time.sleep(BATCH_SLEEP)
+            continue
+        if not isinstance(data, list):
+            for a in batch:
+                out[a] = {"utxos": [], "has_more": False, "error": "unexpected response"}
+            time.sleep(BATCH_SLEEP)
+            continue
+        for entry in data:
+            addr = entry.get("address")
+            if not addr:
+                continue
+            err = entry.get("error") or None
+            utxos = entry.get("result") or []
+            has_more = bool(entry.get("nextPageToken"))
+            out[addr] = {"utxos": utxos, "has_more": has_more, "error": err}
+        # Fill in any addresses missing from response (rare)
+        for a in batch:
+            out.setdefault(a, {"utxos": [], "has_more": False, "error": "missing from response"})
+        time.sleep(BATCH_SLEEP)
+    return out
+
+
+def balance_history(addr: str, snapshots: list[dict]) -> list[int]:
+    """Return balance (sats) for `addr` across a chronological list of snapshots.
+
+    Missing entries are skipped — the series is only days the address was in
+    the top 1000 (churn into/out of top 1000 is signal, not missing data).
+    """
+    series: list[int] = []
+    for snap in snapshots:
+        for a in snap.get("addresses", []):
+            if (a.get("address") or a.get("scripthash")) == addr:
+                series.append(a.get("balance", 0))
+                break
+    return series
+
+
+def coefficient_of_variation(values: list[int]) -> float | None:
+    """CV = stddev/mean over positive values. Returns None when undefined."""
+    if len(values) < 2:
+        return None
+    mean = sum(values) / len(values)
+    if mean <= 0:
+        return None
+    return statistics.pstdev(values) / mean
+
+
+def profile_address(
+    addr: str,
+    utxo_info: dict,
+    hist: list[int],
+    tip_height: int | None,
+) -> dict:
+    """Compute a behavioral profile for one address."""
+    utxos = utxo_info.get("utxos", []) or []
+    has_more = utxo_info.get("has_more", False)
+    err = utxo_info.get("error")
+
+    heights = [int(u.get("height", 0)) for u in utxos if isinstance(u, dict)]
+    newest_h = max(heights) if heights else None
+    oldest_h = min(heights) if heights else None
+
+    # Value-weighted avg UTXO height (within the page we saw).
+    total_value = sum(int(u.get("value", 0) or 0) for u in utxos)
+    weighted_h: float | None = None
+    if total_value > 0 and heights:
+        weighted_h = sum(
+            int(u.get("height", 0)) * int(u.get("value", 0) or 0)
+            for u in utxos
+        ) / total_value
+
+    newest_age_days = (tip_height - newest_h) / BLOCKS_PER_DAY if (tip_height and newest_h) else None
+    oldest_age_days = (tip_height - oldest_h) / BLOCKS_PER_DAY if (tip_height and oldest_h) else None
+    weighted_age_days = (tip_height - weighted_h) / BLOCKS_PER_DAY if (tip_height and weighted_h) else None
+
+    cv = coefficient_of_variation(hist)
+    mean_balance_bsv = (sum(hist) / len(hist) / 1e8) if hist else None
+
+    return {
+        "utxo_count_seen": len(utxos),
+        "has_more_utxos": has_more,
+        "utxo_fetch_error": err,
+        "newest_utxo_height": newest_h,
+        "oldest_utxo_height": oldest_h,
+        "newest_utxo_age_days": round(newest_age_days, 2) if newest_age_days is not None else None,
+        "oldest_utxo_age_days": round(oldest_age_days, 2) if oldest_age_days is not None else None,
+        "weighted_utxo_age_days": round(weighted_age_days, 2) if weighted_age_days is not None else None,
+        "snapshots_seen": len(hist),
+        "mean_balance_bsv": round(mean_balance_bsv, 4) if mean_balance_bsv is not None else None,
+        "balance_cv": round(cv, 4) if cv is not None else None,
+    }
+
+
+def classify(profile: dict) -> tuple[str, str]:
+    """Rule-based behavioral role + confidence, derived from a profile.
+
+    Labels describe behavior, not identity. "hot_wallet" means the address
+    behaves like one (fragmented UTXOs + recent activity), not that we know
+    it's an exchange.
+
+    Rule order matters — dormancy is checked first so that long-idle
+    addresses are never misclassified as hot just because they happen to
+    have many old UTXOs.
+    """
+    utxos = profile.get("utxo_count_seen") or 0
+    has_more = profile.get("has_more_utxos")
+    newest_age = profile.get("newest_utxo_age_days")
+    oldest_age = profile.get("oldest_utxo_age_days")
+    cv = profile.get("balance_cv")
+    snapshots_seen = profile.get("snapshots_seen") or 0
+
+    # 1. Truly dormant → cold, regardless of UTXO count. Newest UTXO older
+    #    than ~6 months means nothing has touched this address recently.
+    if newest_age is not None and newest_age >= 180:
+        return ("cold_storage", "high")
+
+    # 2. Hot wallet: fragmented AND recent activity.
+    looks_fragmented = has_more or utxos >= HOT_UTXO_HINT
+    recently_touched = newest_age is not None and newest_age <= 7
+    if looks_fragmented and recently_touched:
+        # Balance also oscillating → very strong hot signal.
+        if cv is not None and cv >= ACTIVE_BALANCE_CV:
+            return ("hot_wallet", "high")
+        # Balance stable despite UTXO churn is the classic exchange
+        # consolidation pattern — still hot, medium confidence.
+        return ("hot_wallet", "medium")
+
+    # 3. Moderately idle few-UTXO address → cold storage.
+    moderately_idle = newest_age is not None and newest_age >= COLD_AGE_DAYS
+    if utxos > 0 and utxos <= HOT_UTXO_HINT and moderately_idle:
+        return ("cold_storage", "medium")
+
+    # 4. Stable balance over multiple snapshots with no recent activity → cold.
+    if (cv is not None and cv <= STABLE_BALANCE_CV and snapshots_seen >= 2
+            and (newest_age is None or newest_age > 7)):
+        return ("cold_storage", "low")
+
+    # 5. Active: balance moves notably but doesn't look like a hot wallet.
+    if cv is not None and cv >= ACTIVE_BALANCE_CV:
+        return ("active", "medium")
+
+    return ("unknown", "low")
+
+
 def fetch_rate() -> float | None:
     data = woc_get("/exchangerate")
     if isinstance(data, dict) and "rate" in data:
@@ -275,6 +481,8 @@ def main():
                         help=f"Mover threshold in BSV (default: {MOVER_THRESHOLD_BSV})")
     parser.add_argument("--skip-investigation", action="store_true",
                         help="Skip the per-mover tx history fetch")
+    parser.add_argument("--skip-profiling", action="store_true",
+                        help="Skip the per-address UTXO / behavioral profiling")
     args = parser.parse_args()
 
     print(f"BSV Snapshot Enricher")
@@ -332,10 +540,51 @@ def main():
     else:
         print("  No previous snapshot, skipping mover detection.")
 
+    # Behavioral profiling (no identity claims — classifies by on-chain behavior).
+    profiles: dict[str, dict] = {}
+    role_counts: dict[str, int] = {}
+    tip_height = None
+    if not args.skip_profiling:
+        print("  Fetching chain tip for UTXO age calc...")
+        tip_height = fetch_tip_height()
+        print(f"    tip: {tip_height}")
+        time.sleep(REQ_SLEEP)
+
+        today_addrs = [
+            a.get("address") or a.get("scripthash")
+            for a in today["addresses"]
+        ]
+        today_addrs = [a for a in today_addrs if a]
+
+        print(f"  Fetching UTXO pages for {len(today_addrs)} addresses "
+              f"({(len(today_addrs) + BULK_BATCH - 1) // BULK_BATCH} bulk calls)...")
+        utxo_map = fetch_bulk_utxos(today_addrs)
+
+        # Build chronological list of all snapshots for balance-history lookup.
+        all_snapshots: list[dict] = []
+        for p in sorted(SNAPSHOTS_DIR.glob("*.json")):
+            if p.stem > args.date:
+                continue
+            try:
+                all_snapshots.append(json.loads(p.read_text()))
+            except Exception:
+                continue
+
+        print(f"  Profiling from {len(all_snapshots)} snapshot(s)...")
+        for addr in today_addrs:
+            hist = balance_history(addr, all_snapshots)
+            profile = profile_address(addr, utxo_map.get(addr, {}), hist, tip_height)
+            role, confidence = classify(profile)
+            profile["role"] = role
+            profile["role_confidence"] = confidence
+            profiles[addr] = profile
+            role_counts[role] = role_counts.get(role, 0) + 1
+
     result = {
         "date": args.date,
         "prev_date": prev_date,
         "enriched_at": datetime.now(timezone.utc).isoformat(),
+        "tip_height": tip_height,
         "bsv_usd": rate,
         "circulating_supply_bsv": supply,
         "total_top1000_bsv": total_bsv,
@@ -343,6 +592,8 @@ def main():
         "mover_threshold_bsv": args.threshold,
         "mover_count": len(movers),
         "movers": movers,
+        "role_counts": role_counts,
+        "profiles": profiles,
     }
 
     ENRICHED_DIR.mkdir(parents=True, exist_ok=True)
@@ -359,6 +610,10 @@ def main():
         top3 = movers[:3]
         for m in top3:
             print(f"    {m['address'][:16]}...  Δ {m['delta_sats'] / 1e8:+,.2f} BSV  ({m['status']})")
+    if role_counts:
+        print("  Behavioral roles:")
+        for role, count in sorted(role_counts.items(), key=lambda kv: -kv[1]):
+            print(f"    {role}: {count}")
     print("Done.")
 
 
