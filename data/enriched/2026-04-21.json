@@ -1,0 +1,1371 @@
+{
+  "date": "2026-04-21",
+  "prev_date": "2026-04-08",
+  "enriched_at": "2026-04-21T08:36:03.989957+00:00",
+  "bsv_usd": 16.02,
+  "circulating_supply_bsv": 20017956.25,
+  "total_top1000_bsv": 10455404.11226412,
+  "top1000_share_of_supply": 0.5223012769979513,
+  "mover_threshold_bsv": 100.0,
+  "mover_count": 71,
+  "movers": [
+    {
+      "address": "162bzZT2hJfv5Gm3ZmWfWfHJjCtMD6rHhw",
+      "delta_sats": 16733717309945,
+      "balance_now_sats": 44033579039745,
+      "balance_prev_sats": 27299861729800,
+      "status": "present",
+      "txs": [
+        {
+          "txid": "327eece30c805816154907f8c090df7710f19f062187a5b35e0b2d983a1bf016",
+          "height": 944282,
+          "direction": "received",
+          "value_to_us_bsv": 167337.17309945,
+          "value_to_others_bsv": 7833.94236802,
+          "counterparty_addresses": [
+            "1G47mSr3oANXMafVrR8UC4pzV7FEAzo3r9"
+          ],
+          "vin_count": 3,
+          "vout_count": 2
+        },
+        {
+          "txid": "360783c033d313d82031de654af48a5cfb73cc00375b90327f6d69cf7099379f",
+          "height": 943435,
+          "direction": "received",
+          "value_to_us_bsv": 6962.19867068,
+          "value_to_others_bsv": 62034.73945171,
+          "counterparty_addresses": [
+            "1G47mSr3oANXMafVrR8UC4pzV7FEAzo3r9"
+          ],
+          "vin_count": 1,
+          "vout_count": 2
+        }
+      ]
+    },
+    {
+      "address": "1Ne2EYEEnh3NmrZgY8tFTvqm7WJYPirCD",
+      "delta_sats": -10020430999200,
+      "balance_now_sats": null,
+      "balance_prev_sats": 10020430999200,
+      "status": "dropped",
+      "txs": [
+        {
+          "txid": "53be31fe6cf16bbf8b6f9681559fa2ce6e248675f9db33bf66b2cb0bfeaa349a",
+          "height": 944092,
+          "direction": "sent",
+          "value_to_us_bsv": 0,
+          "value_to_others_bsv": 157939.543972,
+          "counterparty_addresses": [
+            "1MtK6VN21GEJ6t9uLM5kDH9qqLbuhtdzE1",
+            "15j8Nocuht5MTuW5PwuLPM6n8Bed4UrnrY"
+          ],
+          "vin_count": 8,
+          "vout_count": 2
+        }
+      ]
+    },
+    {
+      "address": "1A6ud3LrKkPqkwrbGmxu84YTsaJX51SmW",
+      "delta_sats": -3100000015230,
+      "balance_now_sats": 209303321230500,
+      "balance_prev_sats": 212403321245730,
+      "status": "present",
+      "txs": [
+        {
+          "txid": "a1dadef019c8111dd9c52c62f17b1de0ee2fbf35ce5c858affe7b7103bb4aba4",
+          "height": 945553,
+          "direction": "received",
+          "value_to_us_bsv": 9011.95564285,
+          "value_to_others_bsv": 10999.99999998,
+          "counterparty_addresses": [
+            "1HDZzy8BTTJ5vk7rbH9MmPuvZEuxBtMPSR",
+            "1LiTwSeexn7HjF5MR6ySYD6kGbV13dptJF",
+            "1PsyNJXs5p2G94g42vcDCMGQvhAUCGBSGU"
+          ],
+          "vin_count": 1,
+          "vout_count": 4
+        },
+        {
+          "txid": "6ab207340043da8544f981325f7bd1592c9ff33eb5b017fa89c9256a864378a0",
+          "height": 944504,
+          "direction": "received",
+          "value_to_us_bsv": 10463.60821421,
+          "value_to_others_bsv": 9999.99999999,
+          "counterparty_addresses": [
+            "1HDZzy8BTTJ5vk7rbH9MmPuvZEuxBtMPSR",
+            "1LiTwSeexn7HjF5MR6ySYD6kGbV13dptJF",
+            "1PsyNJXs5p2G94g42vcDCMGQvhAUCGBSGU"
+          ],
+          "vin_count": 1,
+          "vout_count": 4
+        },
+        {
+          "txid": "bb3250bffa3dcf5cdfe61024dd76dba35e7030d4ac0bee100699e9c659e12e29",
+          "height": 944068,
+          "direction": "received",
+          "value_to_us_bsv": 11573.14799005,
+          "value_to_others_bsv": 9999.99999999,
+          "counterparty_addresses": [
+            "1HDZzy8BTTJ5vk7rbH9MmPuvZEuxBtMPSR",
+            "1LiTwSeexn7HjF5MR6ySYD6kGbV13dptJF",
+            "1PsyNJXs5p2G94g42vcDCMGQvhAUCGBSGU"
+          ],
+          "vin_count": 1,
+          "vout_count": 4
+        },
+        {
+          "txid": "05441feaa5d9ff5ba91bbde2584c10614523a4dc112a44756ba4b8f950e1a636",
+          "height": 943850,
+          "direction": "received",
+          "value_to_us_bsv": 0.12,
+          "value_to_others_bsv": 1472.15543605,
+          "counterparty_addresses": [
+            "1PsyNJXs5p2G94g42vcDCMGQvhAUCGBSGU"
+          ],
+          "vin_count": 1,
+          "vout_count": 2
+        }
+      ]
+    },
+    {
+      "address": "192vYuwH59M2s48JzvCgoDgXAxyApSXQ24",
+      "delta_sats": -3000000000000,
+      "balance_now_sats": null,
+      "balance_prev_sats": 3000000000000,
+      "status": "dropped",
+      "txs": [
+        {
+          "txid": "53be31fe6cf16bbf8b6f9681559fa2ce6e248675f9db33bf66b2cb0bfeaa349a",
+          "height": 944092,
+          "direction": "sent",
+          "value_to_us_bsv": 0,
+          "value_to_others_bsv": 157939.543972,
+          "counterparty_addresses": [
+            "1MtK6VN21GEJ6t9uLM5kDH9qqLbuhtdzE1",
+            "15j8Nocuht5MTuW5PwuLPM6n8Bed4UrnrY"
+          ],
+          "vin_count": 8,
+          "vout_count": 2
+        }
+      ]
+    },
+    {
+      "address": "1G47mSr3oANXMafVrR8UC4pzV7FEAzo3r9",
+      "delta_sats": -2904318187866,
+      "balance_now_sats": 4749116328581,
+      "balance_prev_sats": 7653434516447,
+      "status": "present",
+      "txs": [
+        {
+          "txid": "d0cea884118b57d93e7cae85a36b478b92a80600325ce2b6144ad22ddc2dad6e",
+          "height": 945700,
+          "direction": "received",
+          "value_to_us_bsv": 769.52559568,
+          "value_to_others_bsv": 0.99672,
+          "counterparty_addresses": [
+            "1F9nQKrKG9SsWjHyUkf5ZMCM3Qk1Aok5xf"
+          ],
+          "vin_count": 1,
+          "vout_count": 2
+        },
+        {
+          "txid": "19d55235ffcb64de75eb60a16db3113112292d09f627febcfeebe840abfdd490",
+          "height": 945629,
+          "direction": "received",
+          "value_to_us_bsv": 772.14091853,
+          "value_to_others_bsv": 0.0,
+          "counterparty_addresses": [],
+          "vin_count": 18,
+          "vout_count": 1
+        },
+        {
+          "txid": "8aa517ffea9cbe4fd14b440627241c06a53500cf300b0953d9d25a1da0e4983f",
+          "height": 945627,
+          "direction": "received",
+          "value_to_us_bsv": 770.52231806,
+          "value_to_others_bsv": 318.843164,
+          "counterparty_addresses": [
+            "1HfALjrikXVZCKHAgJ1eYN3M6JvfgmxhL2"
+          ],
+          "vin_count": 1,
+          "vout_count": 3
+        },
+        {
+          "txid": "50dac0add3b6016c99e3783891215cac640ec3eab7df03d0859a2badff9ea517",
+          "height": 945619,
+          "direction": "received",
+          "value_to_us_bsv": 1089.36548478,
+          "value_to_others_bsv": 18.574124,
+          "counterparty_addresses": [
+            "1Cx4Jmn7YgeKEfDX3wfYsCmk9LQpKVcRLG"
+          ],
+          "vin_count": 1,
+          "vout_count": 2
+        },
+        {
+          "txid": "43eca3cf78e17dcec31471cd1770612e1fac714065abb5a5c72a1a6ab2f1fbaf",
+          "height": 945607,
+          "direction": "received",
+          "value_to_us_bsv": 1107.93961116,
+          "value_to_others_bsv": 1080.18571099,
+          "counterparty_addresses": [
+            "1Gv56fke1Xqd4fWU12DmqxJxJ6Dk8r2Wf1"
+          ],
+          "vin_count": 2,
+          "vout_count": 2
+        }
+      ]
+    },
+    {
+      "address": "1AewEkGS6jc1P8EnBj1Z6v6DiRdjBW5AyP",
+      "delta_sats": -2773523398700,
+      "balance_now_sats": null,
+      "balance_prev_sats": 2773523398700,
+      "status": "dropped",
+      "txs": [
+        {
+          "txid": "53be31fe6cf16bbf8b6f9681559fa2ce6e248675f9db33bf66b2cb0bfeaa349a",
+          "height": 944092,
+          "direction": "sent",
+          "value_to_us_bsv": 0,
+          "value_to_others_bsv": 157939.543972,
+          "counterparty_addresses": [
+            "1MtK6VN21GEJ6t9uLM5kDH9qqLbuhtdzE1",
+            "15j8Nocuht5MTuW5PwuLPM6n8Bed4UrnrY"
+          ],
+          "vin_count": 8,
+          "vout_count": 2
+        }
+      ]
+    },
+    {
+      "address": "1PhW1dVHcwHhUhhtL57iY39uSqjovD1ory",
+      "delta_sats": 2251509900000,
+      "balance_now_sats": 2251509900000,
+      "balance_prev_sats": null,
+      "status": "entered",
+      "txs": [
+        {
+          "txid": "d422982512387ef368c196913108cef7f6a81b5a38b519fe1fa0eb780371323d",
+          "height": 944197,
+          "direction": "sent",
+          "value_to_us_bsv": 0,
+          "value_to_others_bsv": 5.96491448,
+          "counterparty_addresses": [
+            "12N3guR3NoLdaB7x8QrgmrHNVQv3cyUwXT",
+            "1HActsmMKSgQxehR4wcGcbSNdmYgBcByr2",
+            "1GDPLRNtv52qfSBXzm9GpV9hwAswMx3y13"
+          ],
+          "vin_count": 4,
+          "vout_count": 3
+        },
+        {
+          "txid": "41b9cd0938cef0ea0c1a08c7f3c8e0610d50fd014b32ae5f88cf9020142051ad",
+          "height": 944169,
+          "direction": "received",
+          "value_to_us_bsv": 22515.099,
+          "value_to_others_bsv": 0.00098938,
+          "counterparty_addresses": [
+            "15j8Nocuht5MTuW5PwuLPM6n8Bed4UrnrY"
+          ],
+          "vin_count": 1,
+          "vout_count": 2
+        },
+        {
+          "txid": "f347bb46afe70ef5b2c43ced00aa3375e93bb1d9ba519b13c026f113c4d66838",
+          "height": 944130,
+          "direction": "received",
+          "value_to_us_bsv": 2.0,
+          "value_to_others_bsv": 22515.09999166,
+          "counterparty_addresses": [
+            "15j8Nocuht5MTuW5PwuLPM6n8Bed4UrnrY"
+          ],
+          "vin_count": 1,
+          "vout_count": 2
+        }
+      ]
+    },
+    {
+      "address": "1L1oZMGbEjUx9j2wtdZzQRfidxyHty6Fb9",
+      "delta_sats": -1729279541223,
+      "balance_now_sats": 551613014303,
+      "balance_prev_sats": 2280892555526,
+      "status": "present",
+      "txs": [
+        {
+          "txid": "b357e97264bbaf7403f089eb242a015efa723af51e555ead957c16b02eeeb677",
+          "height": 945708,
+          "direction": "received",
+          "value_to_us_bsv": 1363.41775744,
+          "value_to_others_bsv": 236.58219716,
+          "counterparty_addresses": [
+            "1PK4VN2tc6DM1x86A5DsQEzgmDgGKHyTvt"
+          ],
+          "vin_count": 1,
+          "vout_count": 2
+        },
+        {
+          "txid": "a77d56e20881d7e5b18f409008d3ee81af5ecc0018b1b5bf4afb67dd490e6dd5",
+          "height": 945695,
+          "direction": "received",
+          "value_to_us_bsv": 2.69799712,
+          "value_to_others_bsv": 14.27024562,
+          "counterparty_addresses": [
+            "183qtMyTiWxLyFZsGamLZrBf4UcadDjFjC"
+          ],
+          "vin_count": 1,
+          "vout_count": 2
+        },
+        {
+          "txid": "82285a298148f093fe809002262ba939d8c52f6b9289dfa6300fda700dff2744",
+          "height": 945577,
+          "direction": "received",
+          "value_to_us_bsv": 57.4906184,
+          "value_to_others_bsv": 347.0021,
+          "counterparty_addresses": [
+            "1JQ2hHroQR4RAUKBnzfiNsChAq2GfW87rp"
+          ],
+          "vin_count": 1,
+          "vout_count": 2
+        },
+        {
+          "txid": "76c7117fbbf335ff6a72f062d77fa589a4b7ca52512719394bab7a9cab80f5b5",
+          "height": 945505,
+          "direction": "received",
+          "value_to_us_bsv": 404.4927638,
+          "value_to_others_bsv": 397.001,
+          "counterparty_addresses": [
+            "18pBYoUrRDaLEPhWX8rUStMCYqU4yhUeYC"
+          ],
+          "vin_count": 1,
+          "vout_count": 2
+        },
+        {
+          "txid": "38ba4b58721506a487a52869922effff9f5c207bc4b70b2df2004c7a35c8bfb1",
+          "height": 945445,
+          "direction": "received",
+          "value_to_us_bsv": 13.81423359,
+          "value_to_others_bsv": 49.9995,
+          "counterparty_addresses": [
+            "177p1wfXP7sT938rtQzHeSGYuvuRzUM4Wi"
+          ],
+          "vin_count": 1,
+          "vout_count": 2
+        }
+      ]
+    },
+    {
+      "address": "1Bhsa6pYd4BZTiz3iXHWaDdemMBZvjFc7m",
+      "delta_sats": 1336597639568,
+      "balance_now_sats": 1336597639568,
+      "balance_prev_sats": null,
+      "status": "entered",
+      "txs": [
+        {
+          "txid": "7ce38bdc96f1a755476908dbfd117267a7eea585773627cffc2f4479ea961763",
+          "height": 945685,
+          "direction": "received",
+          "value_to_us_bsv": 13365.97639568,
+          "value_to_others_bsv": 82.6153414,
+          "counterparty_addresses": [
+            "1P73ThFNn1N3DJ8B6qJXiRH1xCdTtkGhiJ"
+          ],
+          "vin_count": 6,
+          "vout_count": 2
+        },
+        {
+          "txid": "312498e3ce52f691a275157b2ee397f91930352afe7448f5dfb8cefbff9b5038",
+          "height": 945262,
+          "direction": "received",
+          "value_to_us_bsv": 13448.45174686,
+          "value_to_others_bsv": 108.51845857,
+          "counterparty_addresses": [
+            "1P73ThFNn1N3DJ8B6qJXiRH1xCdTtkGhiJ"
+          ],
+          "vin_count": 10,
+          "vout_count": 2
+        },
+        {
+          "txid": "477abc55b0e058060524915b23760b49ee2531bd9dee38e1ce793a8542104342",
+          "height": 945259,
+          "direction": "received",
+          "value_to_us_bsv": 0.01,
+          "value_to_others_bsv": 0.8599886,
+          "counterparty_addresses": [
+            "1DhJHm7L8EbziDkkjyBLiWGBfyxafZxaGa"
+          ],
+          "vin_count": 1,
+          "vout_count": 2
+        },
+        {
+          "txid": "17bfe74e0272986131fa0cdd888a76965205ca2b11743ae9ba1e34363f0790a3",
+          "height": 945259,
+          "direction": "received",
+          "value_to_us_bsv": 0.01,
+          "value_to_others_bsv": 0.86999088,
+          "counterparty_addresses": [
+            "1DhJHm7L8EbziDkkjyBLiWGBfyxafZxaGa"
+          ],
+          "vin_count": 1,
+          "vout_count": 2
+        },
+        {
+          "txid": "86c192084d42b9ee0bb6a3ef84003196e77955c0eb2b177abaea87ac513660ac",
+          "height": 945258,
+          "direction": "received",
+          "value_to_us_bsv": 0.01,
+          "value_to_others_bsv": 0.87999316,
+          "counterparty_addresses": [
+            "1DhJHm7L8EbziDkkjyBLiWGBfyxafZxaGa"
+          ],
+          "vin_count": 1,
+          "vout_count": 2
+        }
+      ]
+    },
+    {
+      "address": "1P73ThFNn1N3DJ8B6qJXiRH1xCdTtkGhiJ",
+      "delta_sats": -1060750525951,
+      "balance_now_sats": 4066134024519,
+      "balance_prev_sats": 5126884550470,
+      "status": "present",
+      "txs": [
+        {
+          "txid": "7ce38bdc96f1a755476908dbfd117267a7eea585773627cffc2f4479ea961763",
+          "height": 945685,
+          "direction": "received",
+          "value_to_us_bsv": 82.6153414,
+          "value_to_others_bsv": 13365.97639568,
+          "counterparty_addresses": [
+            "1Bhsa6pYd4BZTiz3iXHWaDdemMBZvjFc7m"
+          ],
+          "vin_count": 6,
+          "vout_count": 2
+        },
+        {
+          "txid": "90a3b641d386a9fcbcf8134a31ab5afe7f14106347534f05696a7cb810b195e5",
+          "height": 945665,
+          "direction": "received",
+          "value_to_us_bsv": 93.37580552,
+          "value_to_others_bsv": 14.94058205,
+          "counterparty_addresses": [
+            "1FuMsK42e7MHsk1B3bFLKQunHDyejPXqLw"
+          ],
+          "vin_count": 3,
+          "vout_count": 2
+        },
+        {
+          "txid": "75124057cf16ea126bdf5c04760a7f55e42fe6bcd3d9d93a0a845ca28fae77e9",
+          "height": 945658,
+          "direction": "received",
+          "value_to_us_bsv": 9.99e-06,
+          "value_to_others_bsv": 8.888e-05,
+          "counterparty_addresses": [
+            "1JMbcsBazXL1nwBXBCUYaPrzXSYqBTNkdx"
+          ],
+          "vin_count": 1,
+          "vout_count": 2
+        },
+        {
+          "txid": "51d98ecdb963649223ef02dd69538781c95c0dac6fa49471768be48496a5b812",
+          "height": 945505,
+          "direction": "received",
+          "value_to_us_bsv": 1965.67852473,
+          "value_to_others_bsv": 30.32147299,
+          "counterparty_addresses": [
+            "1PYZ9k1ZXBTZ3rMuabfotkLqdzt5oyDCGu"
+          ],
+          "vin_count": 1,
+          "vout_count": 2
+        },
+        {
+          "txid": "390136a17b0baacbd9879ca1787ef59f19129270fde593601424bb86d8210fe1",
+          "height": 945505,
+          "direction": "received",
+          "value_to_us_bsv": 1533.23419894,
+          "value_to_others_bsv": 29.97,
+          "counterparty_addresses": [
+            "12oiUJBiSYLUmrSvimgiPDmkxqKXyWueeS"
+          ],
+          "vin_count": 2,
+          "vout_count": 2
+        }
+      ]
+    },
+    {
+      "address": "1MgZkbYJsvsgJdTG87SehaqoQCwfvYJjhn",
+      "delta_sats": 912959285345,
+      "balance_now_sats": 4239238313165,
+      "balance_prev_sats": 3326279027820,
+      "status": "present",
+      "txs": [
+        {
+          "txid": "e398521b84abc824b30c705ee28863325a3033f0f7650ce3e124750af2ff1853",
+          "height": 945315,
+          "direction": "received",
+          "value_to_us_bsv": 401.4999807,
+          "value_to_others_bsv": 0.0,
+          "counterparty_addresses": [],
+          "vin_count": 1,
+          "vout_count": 1
+        },
+        {
+          "txid": "142f6b6ac5b015164e0651032d2fc603c056541e0d376d68225bbc4cfc779193",
+          "height": 945291,
+          "direction": "received",
+          "value_to_us_bsv": 999.9999807,
+          "value_to_others_bsv": 0.0,
+          "counterparty_addresses": [],
+          "vin_count": 1,
+          "vout_count": 1
+        },
+        {
+          "txid": "b68139805d6d5dcb0df1c173053ac726197440a240f87e1bb516e1480cfe7e66",
+          "height": 945179,
+          "direction": "received",
+          "value_to_us_bsv": 362.90105635,
+          "value_to_others_bsv": 0.0,
+          "counterparty_addresses": [],
+          "vin_count": 1,
+          "vout_count": 1
+        },
+        {
+          "txid": "a2f4fac76b9f724cc9befb5fa53e0ac3cfdb509e3336e5d3917bc9e09b330581",
+          "height": 945016,
+          "direction": "received",
+          "value_to_us_bsv": 103.9999807,
+          "value_to_others_bsv": 0.0,
+          "counterparty_addresses": [],
+          "vin_count": 1,
+          "vout_count": 1
+        },
+        {
+          "txid": "7aeb13f46cf5c14edfd1da8d697425bd4b56738c36f0db774e6e57ff96fcb9d7",
+          "height": 944731,
+          "direction": "received",
+          "value_to_us_bsv": 231.1999807,
+          "value_to_others_bsv": 0.0,
+          "counterparty_addresses": [],
+          "vin_count": 1,
+          "vout_count": 1
+        }
+      ]
+    },
+    {
+      "address": "1MtK6VN21GEJ6t9uLM5kDH9qqLbuhtdzE1",
+      "delta_sats": 841254397200,
+      "balance_now_sats": 841254397200,
+      "balance_prev_sats": null,
+      "status": "entered",
+      "txs": [
+        {
+          "txid": "53be31fe6cf16bbf8b6f9681559fa2ce6e248675f9db33bf66b2cb0bfeaa349a",
+          "height": 944092,
+          "direction": "received",
+          "value_to_us_bsv": 8412.543972,
+          "value_to_others_bsv": 149527.0,
+          "counterparty_addresses": [
+            "15j8Nocuht5MTuW5PwuLPM6n8Bed4UrnrY"
+          ],
+          "vin_count": 8,
+          "vout_count": 2
+        }
+      ]
+    },
+    {
+      "address": "1KmpMqw7hEHZ8reoc66LDbEAhZgH9cHvyq",
+      "delta_sats": 557381105656,
+      "balance_now_sats": 745586336057,
+      "balance_prev_sats": 188205230401,
+      "status": "present",
+      "txs": [
+        {
+          "txid": "7b18a2a3e02965c80d97ff30fe9eddf1d12f94de7df7b8dd3ec23f45799f22d7",
+          "height": 945666,
+          "direction": "received",
+          "value_to_us_bsv": 76.45673831,
+          "value_to_others_bsv": 166.0,
+          "counterparty_addresses": [
+            "1Av1xMeWnHe6229FnENzwDS6j91ghnGKFX"
+          ],
+          "vin_count": 1,
+          "vout_count": 2
+        },
+        {
+          "txid": "687318329095f90fe78679b9dbda6653c86263b2f3b91289401cf57f7ddf03d4",
+          "height": 945616,
+          "direction": "received",
+          "value_to_us_bsv": 23.19358636,
+          "value_to_others_bsv": 205.0,
+          "counterparty_addresses": [
+            "1Av1xMeWnHe6229FnENzwDS6j91ghnGKFX"
+          ],
+          "vin_count": 1,
+          "vout_count": 2
+        },
+        {
+          "txid": "15cb2cef51abf323d684bc49b424838b946b157e2ea66beb6618413c899c32a9",
+          "height": 945588,
+          "direction": "received",
+          "value_to_us_bsv": 242.45674737,
+          "value_to_others_bsv": 0.0,
+          "counterparty_addresses": [],
+          "vin_count": 7,
+          "vout_count": 1
+        },
+        {
+          "txid": "7f0f0731926cfac8cebb010241f296c5ae9f14d8822524a8579cee215ba5f294",
+          "height": 945459,
+          "direction": "received",
+          "value_to_us_bsv": 746.44504802,
+          "value_to_others_bsv": 0.0,
+          "counterparty_addresses": [],
+          "vin_count": 10,
+          "vout_count": 1
+        },
+        {
+          "txid": "2a8e4601309b5b8c446c6ff0c9a05a046528a68fa5096931e3428442ca2f1ca8",
+          "height": 945335,
+          "direction": "received",
+          "value_to_us_bsv": 1614.1945938,
+          "value_to_others_bsv": 0.0,
+          "counterparty_addresses": [],
+          "vin_count": 25,
+          "vout_count": 1
+        }
+      ]
+    },
+    {
+      "address": "1EuURTgYEAGk1DS19RHGQUQp3LvrFBJhLu",
+      "delta_sats": -501800000000,
+      "balance_now_sats": null,
+      "balance_prev_sats": 501800000000,
+      "status": "dropped",
+      "txs": [
+        {
+          "txid": "c58e546568981a9d869a6ac69a342294af53e04d4e6af9c0474a18b10743dd9c",
+          "height": 944083,
+          "direction": "sent",
+          "value_to_us_bsv": 0,
+          "value_to_others_bsv": 2045.34839284,
+          "counterparty_addresses": [
+            "149f5fjCx2d35d6Hta3pJkTZeP7N4Z67GN"
+          ],
+          "vin_count": 1,
+          "vout_count": 1
+        },
+        {
+          "txid": "7363024c885f32bd946e7f1abaae4913f8952cf2ebc76f45560561a23da71f8b",
+          "height": 944080,
+          "direction": "received",
+          "value_to_us_bsv": 2045.3483938,
+          "value_to_others_bsv": 2972.651605,
+          "counterparty_addresses": [
+            "1A8Eta9EqWZsv124pb8qyTU1zJLu46PEk6"
+          ],
+          "vin_count": 1,
+          "vout_count": 2
+        }
+      ]
+    },
+    {
+      "address": "1P4t7z8SwnajLpSap3eRpWMXtYBPpnjW9t",
+      "delta_sats": -488720112608,
+      "balance_now_sats": null,
+      "balance_prev_sats": 488720112608,
+      "status": "dropped",
+      "txs": [
+        {
+          "txid": "649c22dcc7113c7422ffd2e3d34a9778568cf48784d1aea6ae1a91e73fbd2679",
+          "height": 945744,
+          "direction": "received",
+          "value_to_us_bsv": 0.61299563,
+          "value_to_others_bsv": 0.0,
+          "counterparty_addresses": [],
+          "vin_count": 2,
+          "vout_count": 1
+        },
+        {
+          "txid": "882e37951f6a2597baf6b44913ba0b9efcc73f87ffa22e6c9168b27308795879",
+          "height": 945742,
+          "direction": "sent",
+          "value_to_us_bsv": 0,
+          "value_to_others_bsv": 7.41994135,
+          "counterparty_addresses": [
+            "1HadZHgZDmYGMHLEzuEcdCsbGNUA8smTkF",
+            "17d6fvZv5j34htM1LnWUVjJuKR4uEkkzuS"
+          ],
+          "vin_count": 1,
+          "vout_count": 2
+        },
+        {
+          "txid": "aca7cbf8302d35285ace192d1449f4e678edd49bcf4749386dfb6047ac857acb",
+          "height": 945742,
+          "direction": "sent",
+          "value_to_us_bsv": 0,
+          "value_to_others_bsv": 1.13032935,
+          "counterparty_addresses": [
+            "1DmnngT4Ws565sAxmb34kfJYE8D8LnGtr9",
+            "17d6fvZv5j34htM1LnWUVjJuKR4uEkkzuS"
+          ],
+          "vin_count": 1,
+          "vout_count": 2
+        },
+        {
+          "txid": "5d9485f5aadd1c84ee6342c6def4083b2ba35fac2960f291ba06c9061cc0bd69",
+          "height": 945739,
+          "direction": "received",
+          "value_to_us_bsv": 0.482673,
+          "value_to_others_bsv": 0.0,
+          "counterparty_addresses": [],
+          "vin_count": 5,
+          "vout_count": 1
+        },
+        {
+          "txid": "4e1a968f2f2deaa101428bcbfde3319b0edc9be5b49b27e98f8b8cfeae67785e",
+          "height": 945739,
+          "direction": "received",
+          "value_to_us_bsv": 1.1303403,
+          "value_to_others_bsv": 0.0,
+          "counterparty_addresses": [],
+          "vin_count": 1,
+          "vout_count": 1
+        }
+      ]
+    },
+    {
+      "address": "1A6QakGTRESTadCMGvPfLMiMf7ioVAMbWN",
+      "delta_sats": -475800001095,
+      "balance_now_sats": 13387194359251,
+      "balance_prev_sats": 13862994360346,
+      "status": "present",
+      "txs": [
+        {
+          "txid": "1df7345054c2155a5f68aab44712726166a17287cb1b7e5946cd7c5aaf346088",
+          "height": 944698,
+          "direction": "received",
+          "value_to_us_bsv": 1500.0,
+          "value_to_others_bsv": 5757.99998905,
+          "counterparty_addresses": [
+            "17d6fvZv5j34htM1LnWUVjJuKR4uEkkzuS"
+          ],
+          "vin_count": 1,
+          "vout_count": 2
+        },
+        {
+          "txid": "6a42e040a13485806e1cd1ff1636cecc66153642d8ef7542cfa2e1cea43d671a",
+          "height": 944659,
+          "direction": "received",
+          "value_to_us_bsv": 12741.99998905,
+          "value_to_others_bsv": 7258.0,
+          "counterparty_addresses": [
+            "1P4t7z8SwnajLpSap3eRpWMXtYBPpnjW9t"
+          ],
+          "vin_count": 1,
+          "vout_count": 2
+        },
+        {
+          "txid": "6c64d967215500fd28fcbcc3467d02f0096da6006196cf4dde22498d29cfd3d9",
+          "height": 944141,
+          "direction": "received",
+          "value_to_us_bsv": 1000.0,
+          "value_to_others_bsv": 901.6596151,
+          "counterparty_addresses": [
+            "17d6fvZv5j34htM1LnWUVjJuKR4uEkkzuS"
+          ],
+          "vin_count": 2,
+          "vout_count": 2
+        },
+        {
+          "txid": "1f200e227e35135dbdc67ba5b46c5d5c94474eca8a2e545d73ba286a9a05b0d8",
+          "height": 943548,
+          "direction": "received",
+          "value_to_us_bsv": 2000.0,
+          "value_to_others_bsv": 710.9936541,
+          "counterparty_addresses": [
+            "17d6fvZv5j34htM1LnWUVjJuKR4uEkkzuS"
+          ],
+          "vin_count": 2,
+          "vout_count": 2
+        }
+      ]
+    },
+    {
+      "address": "12ov5BL4NbCn8GsdeV6fdPa5HrHGsdAopK",
+      "delta_sats": 469748748644,
+      "balance_now_sats": 9717265384063,
+      "balance_prev_sats": 9247516635419,
+      "status": "present",
+      "txs": [
+        {
+          "txid": "1281b8eaff7c12b344cf5e7e77bcbfe26125213126a5debcb622f4c107de6680",
+          "height": 945746,
+          "direction": "received",
+          "value_to_us_bsv": 1.09498941,
+          "value_to_others_bsv": 0.0,
+          "counterparty_addresses": [],
+          "vin_count": 1,
+          "vout_count": 1
+        },
+        {
+          "txid": "0127a531ebc7d38024510f89c4bab7f33bd9aecfbbcdc9164d148958c81943d9",
+          "height": 945734,
+          "direction": "received",
+          "value_to_us_bsv": 3.049996,
+          "value_to_others_bsv": 0.0,
+          "counterparty_addresses": [],
+          "vin_count": 1,
+          "vout_count": 1
+        },
+        {
+          "txid": "3a2f616a41eee6c90a90795b8abe367a5a09db168a2210d23691df70566d0e88",
+          "height": 945720,
+          "direction": "received",
+          "value_to_us_bsv": 116.999996,
+          "value_to_others_bsv": 0.0,
+          "counterparty_addresses": [],
+          "vin_count": 1,
+          "vout_count": 1
+        },
+        {
+          "txid": "e0f324f844d319010f170e7e997896514c8593d5dcea8a498f210c200ec3ba22",
+          "height": 945706,
+          "direction": "received",
+          "value_to_us_bsv": 122.999996,
+          "value_to_others_bsv": 0.0,
+          "counterparty_addresses": [],
+          "vin_count": 1,
+          "vout_count": 1
+        },
+        {
+          "txid": "6c275fcc2ab6dc2ffb748c60444a0f18eff645ec410c956062471f49c488e6da",
+          "height": 945693,
+          "direction": "received",
+          "value_to_us_bsv": 0.00156008,
+          "value_to_others_bsv": 0.962869,
+          "counterparty_addresses": [
+            "1KYQokCJ1znvQC95K3ce2uNY45SUMcE8Sb"
+          ],
+          "vin_count": 1,
+          "vout_count": 2
+        }
+      ]
+    },
+    {
+      "address": "1EPhH75gTDLym8jayb4UyFvW1DiW8CwC8J",
+      "delta_sats": 300507221090,
+      "balance_now_sats": 783815091144,
+      "balance_prev_sats": 483307870054,
+      "status": "present",
+      "txs": [
+        {
+          "txid": "a6ccba7057a4b493e1c6301cdf4b3f65ad8a75d5c418dcdb1bafcb2e55981144",
+          "height": 945740,
+          "direction": "received",
+          "value_to_us_bsv": 201.0,
+          "value_to_others_bsv": 5.746111,
+          "counterparty_addresses": [
+            "15xKt23F6p6U88KCHVvcPyeKYnHj1eoM4X"
+          ],
+          "vin_count": 2,
+          "vout_count": 2
+        },
+        {
+          "txid": "aa5e45334e81ea359150fb0873c4da09c6af37f1d79ad0e9f5cc62255bb5a4b8",
+          "height": 945718,
+          "direction": "received",
+          "value_to_us_bsv": 125.42,
+          "value_to_others_bsv": 0.001092,
+          "counterparty_addresses": [
+            "1PQVkQECBo9mHfwcHf85KstSqzNtPnCvjg"
+          ],
+          "vin_count": 1,
+          "vout_count": 2
+        },
+        {
+          "txid": "6fdb8564952e7d4d60559b674929c04365413aaac29db68aa03fea568f0d6e9a",
+          "height": 945704,
+          "direction": "received",
+          "value_to_us_bsv": 256.0,
+          "value_to_others_bsv": 0.970733,
+          "counterparty_addresses": [
+            "1EgQrFxeRDwtfTsPzxWAaERisdGntwM69R"
+          ],
+          "vin_count": 3,
+          "vout_count": 2
+        },
+        {
+          "txid": "67c419fc946c5e4dbf5a4ece702894e521e347c3fa2c63eb42323e0071b5fab0",
+          "height": 945695,
+          "direction": "received",
+          "value_to_us_bsv": 40.0,
+          "value_to_others_bsv": 0.0,
+          "counterparty_addresses": [],
+          "vin_count": 2,
+          "vout_count": 1
+        },
+        {
+          "txid": "e1a222602f63b1957d995bd70bbc221f53b7932463d8b8151965f05a89c0aafd",
+          "height": 945690,
+          "direction": "received",
+          "value_to_us_bsv": 19.54763,
+          "value_to_others_bsv": 7e-06,
+          "counterparty_addresses": [
+            "1ELA3y6Dj2XTnH2FxgLvweV6f5eGaqaY9N"
+          ],
+          "vin_count": 3,
+          "vout_count": 2
+        }
+      ]
+    },
+    {
+      "address": "1HDZzy8BTTJ5vk7rbH9MmPuvZEuxBtMPSR",
+      "delta_sats": 297853667066,
+      "balance_now_sats": 1379287647885,
+      "balance_prev_sats": 1081433980819,
+      "status": "present",
+      "txs": [
+        {
+          "txid": "fdd26b926853fda8473b54902b920b837e6fb2bfbb0ca5957cbf837228996afb",
+          "height": 945705,
+          "direction": "received",
+          "value_to_us_bsv": 426.77479573,
+          "value_to_others_bsv": 123.0,
+          "counterparty_addresses": [
+            "1KXyFqULDJu9CSvqgxxmRTVK7Zu4LK7QXB"
+          ],
+          "vin_count": 1,
+          "vout_count": 2
+        },
+        {
+          "txid": "6b1e8017d98745f76d030efb6def3116827bc46190bef7900f86851a2a5bf99c",
+          "height": 945703,
+          "direction": "received",
+          "value_to_us_bsv": 3447.66705416,
+          "value_to_others_bsv": 39.9995,
+          "counterparty_addresses": [
+            "1GwugM5JZBdoKZnfD7yWu2WFGesfaj5RD4"
+          ],
+          "vin_count": 1,
+          "vout_count": 2
+        },
+        {
+          "txid": "a52e927502ab9f3fb6feb208370fc73e151d59b6b67860b66b4b8c9c093eb6c2",
+          "height": 945667,
+          "direction": "received",
+          "value_to_us_bsv": 3487.66659166,
+          "value_to_others_bsv": 93.0,
+          "counterparty_addresses": [
+            "1KXyFqULDJu9CSvqgxxmRTVK7Zu4LK7QXB"
+          ],
+          "vin_count": 1,
+          "vout_count": 2
+        },
+        {
+          "txid": "04bb258afffd8f6a24e90a8d894d7ced3b060aa79083cff1d386cbb6a71cfb19",
+          "height": 945636,
+          "direction": "received",
+          "value_to_us_bsv": 3580.66662916,
+          "value_to_others_bsv": 86.0,
+          "counterparty_addresses": [
+            "1KXyFqULDJu9CSvqgxxmRTVK7Zu4LK7QXB"
+          ],
+          "vin_count": 1,
+          "vout_count": 2
+        },
+        {
+          "txid": "a1dadef019c8111dd9c52c62f17b1de0ee2fbf35ce5c858affe7b7103bb4aba4",
+          "height": 945553,
+          "direction": "received",
+          "value_to_us_bsv": 3666.66666666,
+          "value_to_others_bsv": 16345.28897617,
+          "counterparty_addresses": [
+            "1LiTwSeexn7HjF5MR6ySYD6kGbV13dptJF",
+            "1PsyNJXs5p2G94g42vcDCMGQvhAUCGBSGU",
+            "1A6ud3LrKkPqkwrbGmxu84YTsaJX51SmW"
+          ],
+          "vin_count": 1,
+          "vout_count": 4
+        }
+      ]
+    },
+    {
+      "address": "1A8Eta9EqWZsv124pb8qyTU1zJLu46PEk6",
+      "delta_sats": 297265160500,
+      "balance_now_sats": 297265160500,
+      "balance_prev_sats": null,
+      "status": "entered",
+      "txs": [
+        {
+          "txid": "7363024c885f32bd946e7f1abaae4913f8952cf2ebc76f45560561a23da71f8b",
+          "height": 944080,
+          "direction": "received",
+          "value_to_us_bsv": 2972.651605,
+          "value_to_others_bsv": 2045.3483938,
+          "counterparty_addresses": [
+            "1EuURTgYEAGk1DS19RHGQUQp3LvrFBJhLu"
+          ],
+          "vin_count": 1,
+          "vout_count": 2
+        }
+      ]
+    },
+    {
+      "address": "1KdTph8ADJnhoJKxxtWrc5qrQRgbNaxHGR",
+      "delta_sats": 297265160500,
+      "balance_now_sats": 297265160500,
+      "balance_prev_sats": null,
+      "status": "entered"
+    },
+    {
+      "address": "1GDPLRNtv52qfSBXzm9GpV9hwAswMx3y13",
+      "delta_sats": -294260974277,
+      "balance_now_sats": 3384136787250,
+      "balance_prev_sats": 3678397761527,
+      "status": "present"
+    },
+    {
+      "address": "1PsyNJXs5p2G94g42vcDCMGQvhAUCGBSGU",
+      "delta_sats": 285959906111,
+      "balance_now_sats": 1377620133824,
+      "balance_prev_sats": 1091660227713,
+      "status": "present"
+    },
+    {
+      "address": "17d6fvZv5j34htM1LnWUVjJuKR4uEkkzuS",
+      "delta_sats": 217053596478,
+      "balance_now_sats": 460264687553,
+      "balance_prev_sats": 243211091075,
+      "status": "present"
+    },
+    {
+      "address": "149f5fjCx2d35d6Hta3pJkTZeP7N4Z67GN",
+      "delta_sats": 204534839284,
+      "balance_now_sats": 204534839284,
+      "balance_prev_sats": null,
+      "status": "entered"
+    },
+    {
+      "address": "1AZz7GLsMaBaqSf5TmjtdMEN2RMJCBGy5f",
+      "delta_sats": 199899999096,
+      "balance_now_sats": 199899999096,
+      "balance_prev_sats": null,
+      "status": "entered"
+    },
+    {
+      "address": "1FfURAppzQMYHHwHxj8vN2xUcA3ZrhwsQ9",
+      "delta_sats": 182608295544,
+      "balance_now_sats": 182608295544,
+      "balance_prev_sats": null,
+      "status": "entered"
+    },
+    {
+      "address": "15zSzgV6zALBegXuqgRmjsqVdzAv44hDJ8",
+      "delta_sats": -182592538625,
+      "balance_now_sats": null,
+      "balance_prev_sats": 182592538625,
+      "status": "dropped"
+    },
+    {
+      "address": "1Q92V5J5PvkEfEFowmLrsQTeo5pkNQucDX",
+      "delta_sats": -180099998144,
+      "balance_now_sats": null,
+      "balance_prev_sats": 180099998144,
+      "status": "dropped"
+    },
+    {
+      "address": "1GEV75GkbH9bCBdjq4sXSexbkfr1rGbXtA",
+      "delta_sats": 158700000000,
+      "balance_now_sats": 158700000000,
+      "balance_prev_sats": null,
+      "status": "entered"
+    },
+    {
+      "address": "1LiHtVCw6sLjfuPDLaKdXAeN3PyKFxMN8L",
+      "delta_sats": -158652229049,
+      "balance_now_sats": null,
+      "balance_prev_sats": 158652229049,
+      "status": "dropped"
+    },
+    {
+      "address": "1sNmWH7ffDeTXTFKwyEmVdPJhQ5oHJMet",
+      "delta_sats": -157239198200,
+      "balance_now_sats": null,
+      "balance_prev_sats": 157239198200,
+      "status": "dropped"
+    },
+    {
+      "address": "1NQKomMAEPEq6jSdpRNFRjcKPvVvhUL33f",
+      "delta_sats": -151507550792,
+      "balance_now_sats": null,
+      "balance_prev_sats": 151507550792,
+      "status": "dropped"
+    },
+    {
+      "address": "1PmPEwH3y72FCTd4gMTZNrKUSHqRCmQ7bj",
+      "delta_sats": 151000515732,
+      "balance_now_sats": 151000515732,
+      "balance_prev_sats": null,
+      "status": "entered"
+    },
+    {
+      "address": "1CPNUWtmYAwxE4NLfdzgKwvnHGLZAL2fxx",
+      "delta_sats": 145199998510,
+      "balance_now_sats": 145199998510,
+      "balance_prev_sats": null,
+      "status": "entered"
+    },
+    {
+      "address": "16RAZ3StAm9FMsynTNu9FgPWncQkWLRZuZ",
+      "delta_sats": -145103252985,
+      "balance_now_sats": 630116265149,
+      "balance_prev_sats": 775219518134,
+      "status": "present"
+    },
+    {
+      "address": "17R3rr6vvW4SpboBBJd1UTMkN6VZoa5TCS",
+      "delta_sats": 137239197900,
+      "balance_now_sats": 137239197900,
+      "balance_prev_sats": null,
+      "status": "entered"
+    },
+    {
+      "address": "1PxEJSiBzpce9gsc8XVgJHxrBdtNsn9ot",
+      "delta_sats": 134848109650,
+      "balance_now_sats": 134848109650,
+      "balance_prev_sats": null,
+      "status": "entered"
+    },
+    {
+      "address": "16fXsmPag3JTLspk8dxrAVPkp2YFWU8Ziy",
+      "delta_sats": 131294664906,
+      "balance_now_sats": 131294664906,
+      "balance_prev_sats": null,
+      "status": "entered"
+    },
+    {
+      "address": "1FXG5LuudaqAKiWHqJrGtEAv9ARUZJBJT6",
+      "delta_sats": -129728687276,
+      "balance_now_sats": null,
+      "balance_prev_sats": 129728687276,
+      "status": "dropped"
+    },
+    {
+      "address": "1BK5zr3fdiKbxSSWU16St7KyQosEP6WKij",
+      "delta_sats": -129629728000,
+      "balance_now_sats": null,
+      "balance_prev_sats": 129629728000,
+      "status": "dropped"
+    },
+    {
+      "address": "18WvSxXP2i8cUycK4x4fcUdjnCwYAxHX1A",
+      "delta_sats": 127720711243,
+      "balance_now_sats": 127720711243,
+      "balance_prev_sats": null,
+      "status": "entered"
+    },
+    {
+      "address": "18VWHjMt4ixHddPPbs6righWTs3Sg2QNcn",
+      "delta_sats": 126988409543,
+      "balance_now_sats": 591737867712,
+      "balance_prev_sats": 464749458169,
+      "status": "present"
+    },
+    {
+      "address": "1EjY5v5r4XeuhxHeBQAhgf8GeLm9ngdfMd",
+      "delta_sats": -126851607734,
+      "balance_now_sats": null,
+      "balance_prev_sats": 126851607734,
+      "status": "dropped"
+    },
+    {
+      "address": "18HsvzrxxQsuLuFiouNWBzqvkSndRFPKoU",
+      "delta_sats": -126499950547,
+      "balance_now_sats": null,
+      "balance_prev_sats": 126499950547,
+      "status": "dropped"
+    },
+    {
+      "address": "19XnNQmxUoLJFihsxU26YsKSREZWu24NtC",
+      "delta_sats": -125243368738,
+      "balance_now_sats": null,
+      "balance_prev_sats": 125243368738,
+      "status": "dropped"
+    },
+    {
+      "address": "1Gv56fke1Xqd4fWU12DmqxJxJ6Dk8r2Wf1",
+      "delta_sats": -124777862006,
+      "balance_now_sats": 208754072338,
+      "balance_prev_sats": 333531934344,
+      "status": "present"
+    },
+    {
+      "address": "1ATp71V1RPQiH5Awy5NuEqXhogFkcBYaPE",
+      "delta_sats": -100000001118,
+      "balance_now_sats": 149999994234,
+      "balance_prev_sats": 249999995352,
+      "status": "present"
+    },
+    {
+      "address": "1Kehj5KH4wqMv4HtMJZeiwChsgg7PAvPaz",
+      "delta_sats": -100000000000,
+      "balance_now_sats": 200037083559,
+      "balance_prev_sats": 300037083559,
+      "status": "present"
+    },
+    {
+      "address": "1LY2M3RCkEVKo82ym1SQ1iZGQhM5Lf5Pkf",
+      "delta_sats": 96548596957,
+      "balance_now_sats": 495920288622,
+      "balance_prev_sats": 399371691665,
+      "status": "present"
+    },
+    {
+      "address": "1Be99Kp8LVB99491BQ1ktq2WUVQxyfNns6",
+      "delta_sats": 85494179090,
+      "balance_now_sats": 243215767425,
+      "balance_prev_sats": 157721588335,
+      "status": "present"
+    },
+    {
+      "address": "13vk2489AFSXXXpWXWu58eb3LNqgvLaecz",
+      "delta_sats": 80765852685,
+      "balance_now_sats": 1347962476357,
+      "balance_prev_sats": 1267196623672,
+      "status": "present"
+    },
+    {
+      "address": "1FMYnL1UuBkBidPjGwTvZA2EKoXDn16fmj",
+      "delta_sats": 80000000000,
+      "balance_now_sats": 549999880000,
+      "balance_prev_sats": 469999880000,
+      "status": "present"
+    },
+    {
+      "address": "1M2u7hLw2B7hZB3YoV9vaHhkRLk6t9mHhi",
+      "delta_sats": 75360600000,
+      "balance_now_sats": 211025600000,
+      "balance_prev_sats": 135665000000,
+      "status": "present"
+    },
+    {
+      "address": "1HL6kUEN6qPdTEJ4T82PwnRSEPfqQQE1Yo",
+      "delta_sats": 75197960000,
+      "balance_now_sats": 251560459000,
+      "balance_prev_sats": 176362499000,
+      "status": "present"
+    },
+    {
+      "address": "1HZiMCBgdn3LYXiMXF5Ty1ggfqzRwHXBh4",
+      "delta_sats": -74220538235,
+      "balance_now_sats": 5305401372354,
+      "balance_prev_sats": 5379621910589,
+      "status": "present"
+    },
+    {
+      "address": "14CobANGxLAKE5PskAubGUkbUrGT3FcWum",
+      "delta_sats": 58609896069,
+      "balance_now_sats": 251652669639,
+      "balance_prev_sats": 193042773570,
+      "status": "present"
+    },
+    {
+      "address": "1AukX7W91NQtvBQNKAWTHpjxkC5kva1U68",
+      "delta_sats": -49807038744,
+      "balance_now_sats": 1940224117223,
+      "balance_prev_sats": 1990031155967,
+      "status": "present"
+    },
+    {
+      "address": "1ShMZrP92s1bFMfrpTMGFwWYyeX9cG1aN",
+      "delta_sats": -49801000000,
+      "balance_now_sats": 1296393000000,
+      "balance_prev_sats": 1346194000000,
+      "status": "present"
+    },
+    {
+      "address": "1JcEthGLh3VJA5BZzxseb7BbkbVE9JzoG1",
+      "delta_sats": 47977600000,
+      "balance_now_sats": 261648996960,
+      "balance_prev_sats": 213671396960,
+      "status": "present"
+    },
+    {
+      "address": "1HKadXW5FfHpfeKhn3NQfprszBruMX8243",
+      "delta_sats": -46962300981,
+      "balance_now_sats": 296466078221,
+      "balance_prev_sats": 343428379202,
+      "status": "present"
+    },
+    {
+      "address": "1PEo9HaTP5AdRygN3PZ9QvgPesacR22iu2",
+      "delta_sats": 45344790192,
+      "balance_now_sats": 261854160180,
+      "balance_prev_sats": 216509369988,
+      "status": "present"
+    },
+    {
+      "address": "1QKD4GM3cAp7ukGe6Vwp5dsJqh6kC9W3vX",
+      "delta_sats": 39999452808,
+      "balance_now_sats": 311390239749,
+      "balance_prev_sats": 271390786941,
+      "status": "present"
+    },
+    {
+      "address": "1LiTwSeexn7HjF5MR6ySYD6kGbV13dptJF",
+      "delta_sats": 32617915384,
+      "balance_now_sats": 1369083224995,
+      "balance_prev_sats": 1336465309611,
+      "status": "present"
+    },
+    {
+      "address": "1N7HQt68kyBW5h3tCC2ck3JiYNmf9z5pNM",
+      "delta_sats": -25413061000,
+      "balance_now_sats": 147788001200,
+      "balance_prev_sats": 173201062200,
+      "status": "present"
+    },
+    {
+      "address": "1BvcVprpYE8Q7SaWiDaRg1YdgJBUXsSnPK",
+      "delta_sats": -24585171745,
+      "balance_now_sats": 130873162104,
+      "balance_prev_sats": 155458333849,
+      "status": "present"
+    },
+    {
+      "address": "15qC8NxSYDpqFTvuUoCvrhMzM1Vkadfw7x",
+      "delta_sats": 18499999098,
+      "balance_now_sats": 212851806929,
+      "balance_prev_sats": 194351807831,
+      "status": "present"
+    },
+    {
+      "address": "1BA47GLhQZrTtPt21CJ73cY9YSSsCXX7gF",
+      "delta_sats": 18272916961,
+      "balance_now_sats": 2049653344029,
+      "balance_prev_sats": 2031380427068,
+      "status": "present"
+    },
+    {
+      "address": "17wjAjRoa8dhw44yHf3pmUTUg8ZstVGbjg",
+      "delta_sats": 14037000000,
+      "balance_now_sats": 151269057600,
+      "balance_prev_sats": 137232057600,
+      "status": "present"
+    },
+    {
+      "address": "1JLp73BGTdWAoMsPasJ7k7GuoA9Yq2XFFY",
+      "delta_sats": -13334769850,
+      "balance_now_sats": 25889261771871,
+      "balance_prev_sats": 25902596541721,
+      "status": "present"
+    },
+    {
+      "address": "1o4cx7NNPBaEpVJthRwjFDsRDNjy8dtKp",
+      "delta_sats": 10758049126,
+      "balance_now_sats": 454155654360,
+      "balance_prev_sats": 443397605234,
+      "status": "present"
+    }
+  ]
+}

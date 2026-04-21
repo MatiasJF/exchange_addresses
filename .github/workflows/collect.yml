@@ -29,11 +29,13 @@ jobs:
 
       - run: python collector.py
 
+      - run: python enrich.py
+
       - name: Commit snapshot
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/snapshots
+          git add data/snapshots data/enriched
           if git diff --cached --quiet; then
             echo "No new snapshot to commit."
           else
