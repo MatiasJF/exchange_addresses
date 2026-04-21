@@ -10,6 +10,8 @@ from analysis import (
     load_timeseries, load_labels, save_labels, latest_snapshot,
     snapshot_dates, load_snapshot, compute_changes, detect_big_movers,
     aggregate_metrics, address_history, sat_to_bsv,
+    latest_enriched, enriched_timeseries, load_clusters,
+    load_resolved_labels, cluster_for_address,
 )
 
 st.set_page_config(page_title="BSV Top 1000 Monitor", layout="wide")
@@ -21,21 +23,39 @@ def load_data():
     labels = load_labels()
     snap = latest_snapshot()
     dates = snapshot_dates()
-    return ts, labels, snap, dates
+    enriched = latest_enriched()
+    ets = enriched_timeseries()
+    clusters_doc = load_clusters()
+    resolved_labels = load_resolved_labels()
+    return ts, labels, snap, dates, enriched, ets, clusters_doc, resolved_labels
 
-ts, labels, snap, dates = load_data()
+ts, labels, snap, dates, enriched, ets, clusters_doc, resolved_labels = load_data()
 
 has_data = snap is not None
 has_timeseries = not ts.empty and len(ts) >= 2
+has_enrichment = bool(enriched)
+profiles = (enriched.get("profiles") if enriched else {}) or {}
 
-# --- Helper ---
+# --- Helpers ---
 def label_for(addr: str) -> str:
     return labels.get(addr, "")
 
+def entity_for(addr: str) -> dict | None:
+    return resolved_labels.get(addr)
+
+def role_for(addr: str) -> tuple[str, str]:
+    p = profiles.get(addr) or {}
+    return (p.get("role") or "", p.get("role_confidence") or "")
+
 def addr_display(addr: str, max_len: int = 16) -> str:
     lbl = label_for(addr)
+    ent = entity_for(addr)
     short = addr[:max_len] + "..." if len(addr) > max_len else addr
-    return f"{short} ({lbl})" if lbl else short
+    if ent:
+        return f"{short} [{ent.get('entity_name')}]"
+    if lbl:
+        return f"{short} ({lbl})"
+    return short
 
 # --- Sidebar ---
 st.sidebar.title("BSV Top 1000 Monitor")
@@ -59,9 +79,11 @@ if has_data:
     st.sidebar.metric("Snapshots collected", len(dates))
 
 # --- Tabs ---
-tab_overview, tab_movers, tab_address, tab_trends, tab_labels, tab_raw = st.tabs(
-    ["Overview", "Big Movers", "Address Detail", "Aggregate Trends", "Labels", "Raw Data"]
-)
+(tab_overview, tab_movers, tab_address, tab_classify, tab_clusters,
+ tab_trends, tab_labels, tab_raw) = st.tabs([
+    "Overview", "Big Movers", "Address Detail", "Classification", "Clusters",
+    "Aggregate Trends", "Labels", "Raw Data",
+])
 
 # ===== TAB 1: OVERVIEW =====
 with tab_overview:
@@ -77,20 +99,44 @@ with tab_overview:
     largest_bsv = max(balances) / 1e8
     median_bsv = float(np.median(balances)) / 1e8
 
+    rate = enriched.get("bsv_usd") if enriched else None
+    share = enriched.get("top1000_share_of_supply") if enriched else None
+
     col1, col2, col3, col4 = st.columns(4)
     col1.metric("Total BSV (Top 1000)", f"{total_bsv:,.0f}")
-    col2.metric("Largest Balance", f"{largest_bsv:,.0f} BSV")
-    col3.metric("Median Balance", f"{median_bsv:,.0f} BSV")
+    if rate:
+        col2.metric("Total USD Value", f"${total_bsv * rate / 1e6:,.1f}M")
+    else:
+        col2.metric("Largest Balance", f"{largest_bsv:,.0f} BSV")
+    if share is not None:
+        col3.metric("Share of Supply", f"{share * 100:.2f}%")
+    else:
+        col3.metric("Median Balance", f"{median_bsv:,.0f} BSV")
     col4.metric("Addresses", len(snap_addresses))
+
+    # Secondary KPI row — role distribution + price
+    if has_enrichment:
+        role_counts = enriched.get("role_counts") or {}
+        c1, c2, c3, c4, c5 = st.columns(5)
+        c1.metric("BSV/USD", f"${rate:,.2f}" if rate else "—")
+        c2.metric("Cold storage", role_counts.get("cold_storage", 0))
+        c3.metric("Hot wallet", role_counts.get("hot_wallet", 0))
+        c4.metric("Active", role_counts.get("active", 0))
+        c5.metric("Unknown", role_counts.get("unknown", 0))
 
     # Table
     table_data = []
     for i, a in enumerate(sorted(snap_addresses, key=lambda x: x["balance"], reverse=True)):
         addr = a.get("address") or a.get("scripthash", "?")
+        role, confidence = role_for(addr)
+        ent = entity_for(addr)
         table_data.append({
             "Rank": i + 1,
             "Address": addr,
+            "Entity": ent.get("entity_name") if ent else "",
             "Label": label_for(addr),
+            "Role": role,
+            "Confidence": confidence,
             "Balance (BSV)": sat_to_bsv(a["balance"]),
             "Type": a.get("type", ""),
         })
@@ -209,14 +255,63 @@ with tab_address:
                         ) if (a.get("address") or a.get("scripthash")) == selected_addr),
                         None,
                     )
-                    c1, c2, c3 = st.columns(3)
+                    c1, c2, c3, c4 = st.columns(4)
                     c1.metric("Current Balance", f"{bal_bsv:,.2f} BSV")
                     c2.metric("Current Rank", f"#{rank}")
-                    c3.metric("Type", addr_data.get("type", "unknown"))
+                    if enriched.get("bsv_usd"):
+                        c3.metric("USD Value", f"${bal_bsv * enriched['bsv_usd']:,.0f}")
+                    else:
+                        c3.metric("Type", addr_data.get("type", "unknown"))
+                    role, confidence = role_for(selected_addr)
+                    if role:
+                        c4.metric("Behavioral role", f"{role}", delta=f"confidence: {confidence}",
+                                  delta_color="off")
+                    else:
+                        c4.metric("Type", addr_data.get("type", "unknown"))
 
+                    ent = entity_for(selected_addr)
+                    if ent:
+                        st.success(
+                            f"Attributed entity: **{ent.get('entity_name')}** "
+                            f"({ent.get('category')}, confidence={ent.get('confidence')}) — "
+                            f"via {ent.get('via')}"
+                        )
                     lbl = label_for(selected_addr)
                     if lbl:
-                        st.info(f"Label: **{lbl}**")
+                        st.info(f"Manual label: **{lbl}**")
+
+                # Profile details
+                prof = profiles.get(selected_addr)
+                if prof:
+                    st.subheader("Behavioral profile")
+                    p1, p2, p3, p4 = st.columns(4)
+                    utxos = prof.get("utxo_count_seen", 0)
+                    more = " +" if prof.get("has_more_utxos") else ""
+                    p1.metric("UTXOs (page 1)", f"{utxos}{more}")
+                    na = prof.get("newest_utxo_age_days")
+                    p2.metric("Newest UTXO age", f"{na:.1f} d" if na is not None else "—")
+                    oa = prof.get("oldest_utxo_age_days")
+                    p3.metric("Oldest UTXO age", f"{oa:.1f} d" if oa is not None else "—")
+                    cv = prof.get("balance_cv")
+                    p4.metric("Balance CV",
+                              f"{cv:.3f}" if cv is not None else "—",
+                              help="Coefficient of variation across snapshots "
+                                   "(stddev / mean). Higher = more volatile.")
+
+                # Cluster membership
+                cid, cluster_members = cluster_for_address(clusters_doc, selected_addr)
+                if cid and len(cluster_members) > 1:
+                    st.subheader(f"Co-spend cluster: {cid}")
+                    st.caption(
+                        f"{len(cluster_members)} addresses have appeared as co-inputs in the "
+                        "same transaction(s) — almost certainly controlled by the same entity "
+                        "(Nakamoto common-input heuristic)."
+                    )
+                    cluster_df = pd.DataFrame(
+                        [{"Address": a, "Same as selected?": a == selected_addr}
+                         for a in cluster_members]
+                    )
+                    st.dataframe(cluster_df, use_container_width=True, hide_index=True)
 
                 # Historical chart
                 if has_timeseries:
@@ -232,6 +327,38 @@ with tab_address:
                     else:
                         st.info("No historical data for this address yet.")
 
+                # Counterparty tx investigation from latest enriched snapshot
+                movers_by_addr = {m["address"]: m for m in (enriched.get("movers") or [])}
+                mover_rec = movers_by_addr.get(selected_addr)
+                if mover_rec and mover_rec.get("txs"):
+                    st.subheader("Recent investigated transactions")
+                    st.caption(
+                        "Sourced from the latest enrichment run. Counterparty list is vout "
+                        "addresses only — senders (vin side) are resolved during clustering."
+                    )
+                    for t in mover_rec["txs"][:5]:
+                        if "error" in t:
+                            st.warning(f"tx {t.get('txid','?')[:16]}... fetch error: {t['error']}")
+                            continue
+                        with st.expander(
+                            f"tx {t['txid'][:16]}…  h={t['height']}  "
+                            f"{t['direction']}  "
+                            f"to us: {t['value_to_us_bsv']:.2f} BSV  "
+                            f"to others: {t['value_to_others_bsv']:.2f} BSV"
+                        ):
+                            for c in t.get("counterparty_addresses") or []:
+                                ent = entity_for(c)
+                                role, _ = role_for(c)
+                                suffix = []
+                                if ent:
+                                    suffix.append(f"entity: {ent.get('entity_name')}")
+                                if role:
+                                    suffix.append(f"role: {role}")
+                                if c in profiles:
+                                    suffix.append("top-1000")
+                                extra = f" — {', '.join(suffix)}" if suffix else ""
+                                st.code(c + extra, language=None)
+
                 # Label editor
                 st.subheader("Edit Label")
                 new_label = st.text_input("Label", value=label_for(selected_addr), key="label_edit")
@@ -243,12 +370,142 @@ with tab_address:
         else:
             st.info("No matching addresses found.")
 
-# ===== TAB 4: AGGREGATE TRENDS =====
+# ===== TAB: CLASSIFICATION =====
+with tab_classify:
+    st.header("Behavioral Classification")
+    st.caption(
+        "Each top-1000 address is tagged with a behavioral role based on its UTXO "
+        "shape and balance history. Labels describe behavior, not identity — "
+        "\"hot_wallet\" means the address behaves like one (many fragmented UTXOs, "
+        "recent activity); it does **not** mean we know it's an exchange."
+    )
+
+    if not has_enrichment or not profiles:
+        st.info("No enrichment data yet. Run `python enrich.py` to populate profiles.")
+    else:
+        role_counts = enriched.get("role_counts") or {}
+        cols = st.columns(len(role_counts) or 1)
+        for i, (role, count) in enumerate(sorted(role_counts.items(), key=lambda kv: -kv[1])):
+            cols[i].metric(role, count)
+
+        # Balance share per role
+        role_bsv: dict[str, float] = {}
+        for a in snap_addresses:
+            addr = a.get("address") or a.get("scripthash")
+            role, _ = role_for(addr)
+            bsv = sat_to_bsv(a["balance"])
+            role_bsv[role or "unknown"] = role_bsv.get(role or "unknown", 0) + bsv
+        st.subheader("BSV held by role")
+        st.bar_chart(pd.Series(role_bsv).sort_values(ascending=False))
+
+        # Filterable table
+        st.subheader("Browse addresses")
+        role_options = ["(all)"] + sorted(role_counts.keys())
+        selected_role = st.selectbox("Filter by role", role_options)
+
+        rows = []
+        for a in snap_addresses:
+            addr = a.get("address") or a.get("scripthash")
+            prof = profiles.get(addr) or {}
+            if selected_role != "(all)" and prof.get("role") != selected_role:
+                continue
+            ent = entity_for(addr)
+            rows.append({
+                "Address": addr,
+                "Balance (BSV)": sat_to_bsv(a["balance"]),
+                "Role": prof.get("role") or "",
+                "Confidence": prof.get("role_confidence") or "",
+                "UTXOs (page 1)": prof.get("utxo_count_seen"),
+                "Newest UTXO age (d)": prof.get("newest_utxo_age_days"),
+                "Balance CV": prof.get("balance_cv"),
+                "Entity": ent.get("entity_name") if ent else "",
+            })
+        rows.sort(key=lambda r: -r["Balance (BSV)"])
+        st.dataframe(pd.DataFrame(rows), use_container_width=True, height=500,
+                     hide_index=True)
+
+
+# ===== TAB: CLUSTERS =====
+with tab_clusters:
+    st.header("Co-spend Clusters")
+    st.caption(
+        "Groups of addresses that have appeared as co-inputs in the same transaction. "
+        "By the Nakamoto common-input heuristic, co-spenders almost certainly share "
+        "one owner. Clusters are anonymous until seeds are added to `data/entities.json`."
+    )
+
+    clusters = clusters_doc.get("clusters") or {}
+    multi = {cid: addrs for cid, addrs in clusters.items() if len(addrs) > 1}
+
+    if not multi:
+        st.info(
+            "No multi-member clusters yet. The clustering process grows daily from "
+            "processed mover transactions — more data means more clusters."
+        )
+    else:
+        c1, c2, c3 = st.columns(3)
+        c1.metric("Total addresses clustered", clusters_doc.get("address_count", 0))
+        c2.metric("Clusters", clusters_doc.get("cluster_count", 0))
+        c3.metric("Multi-member", len(multi))
+
+        # Per-cluster summary with aggregated balance
+        snap_bal = {
+            (a.get("address") or a.get("scripthash")): a.get("balance", 0)
+            for a in snap_addresses
+        }
+        rows = []
+        for cid, addrs in multi.items():
+            total_sats = sum(snap_bal.get(a, 0) for a in addrs)
+            in_top = sum(1 for a in addrs if a in snap_bal)
+            ent = entity_for(addrs[0]) if addrs else None
+            rows.append({
+                "Cluster": cid,
+                "Members": len(addrs),
+                "In top 1000": in_top,
+                "Aggregate BSV (known)": sat_to_bsv(total_sats),
+                "Entity": ent.get("entity_name") if ent else "",
+            })
+        rows.sort(key=lambda r: -r["Aggregate BSV (known)"])
+        st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
+
+        st.subheader("Inspect cluster")
+        pick = st.selectbox("Select cluster", sorted(multi.keys()))
+        if pick:
+            addrs = multi[pick]
+            for a in addrs:
+                bal = sat_to_bsv(snap_bal.get(a, 0))
+                ent = entity_for(a)
+                role, conf = role_for(a)
+                note = []
+                if a in snap_bal:
+                    note.append(f"{bal:,.2f} BSV in top-1000")
+                if role:
+                    note.append(f"role={role}/{conf}")
+                if ent:
+                    note.append(f"entity={ent.get('entity_name')}")
+                st.code(f"{a}  —  {', '.join(note) if note else 'not in current top-1000'}",
+                        language=None)
+
+
+# ===== TAB: AGGREGATE TRENDS =====
 with tab_trends:
     st.header("Aggregate Trends")
 
+    if has_enrichment and not ets.empty:
+        ets_indexed = ets.set_index("date")
+        if "total_top1000_usd" in ets_indexed.columns and ets_indexed["total_top1000_usd"].notna().any():
+            st.subheader("Total USD value in Top 1000")
+            st.line_chart(ets_indexed["total_top1000_usd"])
+        if "top1000_share_of_supply" in ets_indexed.columns and ets_indexed["top1000_share_of_supply"].notna().any():
+            st.subheader("Top-1000 share of circulating BSV supply")
+            st.line_chart(ets_indexed["top1000_share_of_supply"])
+            st.caption("Share trending up = concentration growing, trending down = dispersal.")
+        if "bsv_usd" in ets_indexed.columns and ets_indexed["bsv_usd"].notna().any():
+            st.subheader("BSV/USD rate (per enrichment)")
+            st.line_chart(ets_indexed["bsv_usd"])
+
     if not has_timeseries:
-        st.info("Need at least 2 snapshots to show trends.")
+        st.info("Need at least 2 snapshots for the BSV-denominated charts.")
     else:
         metrics = aggregate_metrics(ts)
 

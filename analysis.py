@@ -10,6 +10,10 @@ DATA_DIR = Path(__file__).parent / "data"
 TIMESERIES_PATH = DATA_DIR / "timeseries.parquet"
 LABELS_PATH = DATA_DIR / "labels.json"
 SNAPSHOTS_DIR = DATA_DIR / "snapshots"
+ENRICHED_DIR = DATA_DIR / "enriched"
+CLUSTERS_PATH = DATA_DIR / "clusters.json"
+ENTITIES_PATH = DATA_DIR / "entities.json"
+LABELS_RESOLVED_PATH = DATA_DIR / "labels_resolved.json"
 
 
 def sat_to_bsv(sats) -> float:
@@ -185,3 +189,89 @@ def address_history(ts: pd.DataFrame, address: str) -> pd.DataFrame:
         "date": series.index,
         "balance_bsv": series.values / 1e8,
     })
+
+
+# --- Sprint 5: enriched / cluster / entity loaders ---------------------------
+
+def _load_json(path: Path, default):
+    if not path.exists():
+        return default
+    try:
+        return json.loads(path.read_text())
+    except Exception:
+        return default
+
+
+def latest_enriched() -> dict:
+    """Return the most recent enriched snapshot, or {} if none."""
+    files = sorted(ENRICHED_DIR.glob("*.json")) if ENRICHED_DIR.exists() else []
+    if not files:
+        return {}
+    return _load_json(files[-1], {})
+
+
+def load_enriched(date_str: str) -> dict:
+    """Return the enriched snapshot for a specific date, or {}."""
+    path = ENRICHED_DIR / f"{date_str}.json"
+    return _load_json(path, {})
+
+
+def enriched_dates() -> list[str]:
+    if not ENRICHED_DIR.exists():
+        return []
+    return sorted(p.stem for p in ENRICHED_DIR.glob("*.json"))
+
+
+def enriched_timeseries() -> pd.DataFrame:
+    """Return a DataFrame with one row per enriched snapshot, columns:
+    date, bsv_usd, circulating_supply_bsv, total_top1000_bsv,
+    top1000_share_of_supply, total_top1000_usd."""
+    rows: list[dict] = []
+    for date in enriched_dates():
+        e = load_enriched(date)
+        if not e:
+            continue
+        total_bsv = e.get("total_top1000_bsv")
+        rate = e.get("bsv_usd")
+        rows.append({
+            "date": date,
+            "bsv_usd": rate,
+            "circulating_supply_bsv": e.get("circulating_supply_bsv"),
+            "total_top1000_bsv": total_bsv,
+            "top1000_share_of_supply": e.get("top1000_share_of_supply"),
+            "total_top1000_usd": (total_bsv * rate) if total_bsv and rate else None,
+        })
+    if not rows:
+        return pd.DataFrame()
+    df = pd.DataFrame(rows)
+    df["date"] = pd.to_datetime(df["date"])
+    df.sort_values("date", inplace=True)
+    return df
+
+
+def load_clusters() -> dict:
+    """Return {parent, clusters, cluster_count, ...} or empty scaffold."""
+    return _load_json(CLUSTERS_PATH, {"parent": {}, "clusters": {}})
+
+
+def load_resolved_labels() -> dict[str, dict]:
+    """Return {address: {entity_id, entity_name, category, confidence, via}}."""
+    doc = _load_json(LABELS_RESOLVED_PATH, {"resolved": {}})
+    return doc.get("resolved") or {}
+
+
+def cluster_for_address(clusters_doc: dict, address: str) -> tuple[str | None, list[str]]:
+    """Return (cluster_id, [members]) for an address, or (None, [])."""
+    parent = clusters_doc.get("parent") or {}
+    clusters = clusters_doc.get("clusters") or {}
+    if address not in parent:
+        return (None, [])
+    root = parent[address]
+    # Find the cluster id whose root matches.
+    for cid, members in clusters.items():
+        if not members:
+            continue
+        # Any member's parent is the root.
+        if parent.get(members[0]) == root:
+            return (cid, members)
+    return (None, [])
