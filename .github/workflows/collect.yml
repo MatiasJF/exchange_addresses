@@ -35,6 +35,11 @@ jobs:
 
       - run: python propagate.py
 
+      - name: Post Discord alert (if configured)
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: python alert.py
+
       - name: Commit snapshot
         run: |
           git config user.name  "github-actions[bot]"

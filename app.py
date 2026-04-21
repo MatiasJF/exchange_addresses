@@ -78,6 +78,23 @@ if has_data:
     st.sidebar.metric("Latest snapshot", snap_date)
     st.sidebar.metric("Snapshots collected", len(dates))
 
+if has_enrichment:
+    enriched_at = enriched.get("enriched_at", "")
+    if enriched_at:
+        st.sidebar.caption(f"Enriched at {enriched_at[:19]}Z")
+    n_multi = (clusters_doc or {}).get("multi_member_cluster_count", 0)
+    if n_multi:
+        st.sidebar.caption(f"Clusters: {n_multi} multi-member")
+    if resolved_labels:
+        st.sidebar.caption(f"Attributed entities: {len(resolved_labels)} addrs")
+
+st.sidebar.markdown("---")
+st.sidebar.caption(
+    "Roles describe behavior, not identity. Clusters are derived from "
+    "the Nakamoto common-input heuristic. Entity names only appear when "
+    "seeded in `data/entities.json`."
+)
+
 # --- Tabs ---
 (tab_overview, tab_movers, tab_address, tab_classify, tab_clusters,
  tab_trends, tab_labels, tab_raw) = st.tabs([
