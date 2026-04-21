@@ -1,0 +1,5 @@
+{
+  "_comment": "Seed corpus of known BSV entities. Each entry lists addresses publicly attributed to a named entity. propagate.py expands these seeds through the common-input clusters in data/clusters.json — every address in the same cluster as a seed inherits the entity label. Populate by hand from verifiable sources (exchange help pages, public incident reports, confirmed miner pool announcements, etc). The 'confidence' field reflects the quality of the source, not the cluster expansion.",
+  "version": 1,
+  "entities": []
+}
