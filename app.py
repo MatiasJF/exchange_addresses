@@ -14,24 +14,8 @@ from analysis import (
 
 st.set_page_config(page_title="BSV Top 1000 Monitor", layout="wide")
 
-# --- Auth gate ---
-APP_PASSWORD = "bsv2026"
-
-if "authenticated" not in st.session_state:
-    st.session_state.authenticated = False
-
-if not st.session_state.authenticated:
-    st.title("BSV Top 1000 Address Monitor")
-    pwd = st.text_input("Password", type="password")
-    if pwd == APP_PASSWORD:
-        st.session_state.authenticated = True
-        st.rerun()
-    elif pwd:
-        st.error("Incorrect password")
-    st.stop()
-
 # --- Data loading ---
-@st.cache_data
+@st.cache_data(ttl=3600)
 def load_data():
     ts = load_timeseries()
     labels = load_labels()
@@ -88,10 +72,10 @@ with tab_overview:
     st.header(f"Top 1000 BSV Addresses — {snap_date}")
 
     # KPIs
-    total_bsv = sum(a["balance"] for a in snap_addresses) / 1e8
-    largest = max(snap_addresses, key=lambda a: a["balance"])
-    largest_bsv = largest["balance"] / 1e8
-    median_bsv = sorted(a["balance"] for a in snap_addresses)[500] / 1e8
+    balances = [a["balance"] for a in snap_addresses]
+    total_bsv = sum(balances) / 1e8
+    largest_bsv = max(balances) / 1e8
+    median_bsv = float(np.median(balances)) / 1e8
 
     col1, col2, col3, col4 = st.columns(4)
     col1.metric("Total BSV (Top 1000)", f"{total_bsv:,.0f}")

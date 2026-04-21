@@ -18,10 +18,25 @@ def sat_to_bsv(sats) -> float:
 
 
 def load_timeseries() -> pd.DataFrame:
-    """Load the consolidated timeseries. Returns empty DataFrame if no data."""
-    if not TIMESERIES_PATH.exists():
-        return pd.DataFrame()
-    ts = pd.read_parquet(TIMESERIES_PATH, engine="pyarrow")
+    """Load the consolidated timeseries. Falls back to rebuilding from snapshots
+    when the parquet cache is absent (e.g., fresh Streamlit Cloud deploy)."""
+    if TIMESERIES_PATH.exists():
+        ts = pd.read_parquet(TIMESERIES_PATH, engine="pyarrow")
+    else:
+        rows = []
+        for snapshot_file in sorted(SNAPSHOTS_DIR.glob("*.json")):
+            with open(snapshot_file) as f:
+                snap = json.load(f)
+            date = snap["date"]
+            for addr in snap["addresses"]:
+                key = addr.get("address") or addr.get("scripthash")
+                if key:
+                    rows.append({"date": date, "address": key, "balance": addr["balance"]})
+        if not rows:
+            return pd.DataFrame()
+        df = pd.DataFrame(rows)
+        ts = df.pivot_table(index="date", columns="address", values="balance", aggfunc="first")
+
     ts.index = pd.to_datetime(ts.index)
     ts.sort_index(inplace=True)
     return ts
@@ -87,9 +102,10 @@ def compute_changes(ts: pd.DataFrame, window: int = 1) -> pd.DataFrame:
     change_abs = balance_now - balance_prev
     change_pct = (change_abs / balance_prev.replace(0, np.nan)) * 100
 
-    # Rankings (1 = highest balance)
-    rank_now = balance_now.rank(ascending=False, method="min").astype(int)
-    rank_prev = balance_prev.rank(ascending=False, method="min").astype(int)
+    # Rankings (1 = highest balance) — computed over the full snapshot so the
+    # number reflects global position, not position within the common subset.
+    rank_now = now.dropna().rank(ascending=False, method="min").astype(int).reindex(common)
+    rank_prev = prev.dropna().rank(ascending=False, method="min").astype(int).reindex(common)
 
     result = pd.DataFrame({
         "address": common,
