@@ -279,46 +279,66 @@ with tab_trends:
 # ===== TAB 5: LABELS =====
 with tab_labels:
     st.header("Known Address Labels")
+    st.caption(
+        "Edit labels inline, delete rows with the row menu, or add new rows at the bottom. "
+        "Click **Save changes** to persist."
+    )
+
+    # Build editable table with current balances
+    label_rows = []
+    snap_by_addr = {}
+    if has_data:
+        snap_by_addr = {
+            (a.get("address") or a.get("scripthash")): a for a in snap_addresses
+        }
+    for addr, lbl in labels.items():
+        addr_data = snap_by_addr.get(addr)
+        bal = sat_to_bsv(addr_data["balance"]) if addr_data else None
+        label_rows.append({"Address": addr, "Label": lbl, "Balance (BSV)": bal})
+
+    df_labels = pd.DataFrame(label_rows, columns=["Address", "Label", "Balance (BSV)"])
+
+    edited = st.data_editor(
+        df_labels,
+        num_rows="dynamic",
+        use_container_width=True,
+        column_config={
+            "Address": st.column_config.TextColumn(required=True),
+            "Label": st.column_config.TextColumn(required=True),
+            "Balance (BSV)": st.column_config.NumberColumn(format="%.2f", disabled=True),
+        },
+        key="labels_editor",
+    )
+
+    if st.button("Save changes", type="primary"):
+        new_labels: dict[str, str] = {}
+        for _, row in edited.iterrows():
+            addr = str(row["Address"]).strip() if pd.notna(row["Address"]) else ""
+            lbl = str(row["Label"]).strip() if pd.notna(row["Label"]) else ""
+            if addr and lbl:
+                new_labels[addr] = lbl
+        save_labels(new_labels)
+        st.cache_data.clear()
+        st.success(f"Saved {len(new_labels)} label(s).")
+        st.rerun()
 
     if labels:
-        # Build label table with current balances
-        label_rows = []
-        for addr, lbl in labels.items():
-            addr_data = next(
-                (a for a in (snap_addresses if has_data else [])
-                 if (a.get("address") or a.get("scripthash")) == addr),
-                None,
-            )
-            bal = sat_to_bsv(addr_data["balance"]) if addr_data else None
-            label_rows.append({"Address": addr, "Label": lbl, "Balance (BSV)": bal})
-
-        df_labels = pd.DataFrame(label_rows)
-        st.dataframe(df_labels, use_container_width=True)
-
-        # Grouped by entity
         st.subheader("Total BSV per Entity")
-        grouped = df_labels.groupby("Label")["Balance (BSV)"].sum().sort_values(ascending=False)
-        grouped = grouped.dropna()
+        grouped = (
+            df_labels.groupby("Label")["Balance (BSV)"].sum().sort_values(ascending=False).dropna()
+        )
         if not grouped.empty:
             st.bar_chart(grouped)
 
-        # Export
         csv = df_labels.to_csv(index=False)
         st.download_button("Download Labels CSV", csv, "labels.csv", "text/csv")
     else:
-        st.info("No labels yet. Add labels from the Address Detail tab.")
+        st.info("No labels yet. Add rows in the table above.")
 
-    # Add new label
-    st.subheader("Add Label")
-    with st.form("add_label"):
-        new_addr = st.text_input("Address")
-        new_lbl = st.text_input("Entity Name")
-        submitted = st.form_submit_button("Add")
-        if submitted and new_addr and new_lbl:
-            labels[new_addr] = new_lbl
-            save_labels(labels)
-            st.success(f"Added: {new_addr[:20]}... = {new_lbl}")
-            st.cache_data.clear()
+    st.caption(
+        "ℹ️ On Streamlit Cloud, label edits are lost on every redeploy. "
+        "For persistent labels, edit `data/labels.json` locally and commit to the repo."
+    )
 
 # ===== TAB 6: RAW DATA =====
 with tab_raw:
