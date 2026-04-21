@@ -1,5 +1,7 @@
 """Fluctuation detection and aggregation for BSV top 1000 address monitoring."""
 
+from __future__ import annotations
+
 import json
 from pathlib import Path
 
